@@ -118,7 +118,7 @@
             height: 100%;
             background: #2563eb;
             width: 0%;
-            transition: width 3.5s linear;
+            transition: width 3s linear;
         }
     </style>
 </head>
@@ -138,6 +138,9 @@
             <div id="splash-bar" class="splash-progress-bar"></div>
         </div>
         
+        <div class="absolute bottom-10 text-slate-300 dark:text-slate-700 font-bold uppercase tracking-widest text-sm">
+            v 2.3.0
+        </div>
     </div>
 
     <!-- Header -->
@@ -145,7 +148,7 @@
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-slate-100 dark:bg-slate-800 border dark:border-slate-700">
-                    <img src="icon.png" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://www.gstatic.com/images/branding/product/1x/keep_48dp.png';">
+                    <img src="icon.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://www.gstatic.com/images/branding/product/1x/keep_48dp.png';">
                 </div>
                 <h1 id="app-title" class="text-xl font-bold tracking-tight">التزاماتي</h1>
             </div>
@@ -201,7 +204,37 @@
 
         <!-- Dashboard Section -->
         <div id="content-dashboard">
+            <!-- Salary Settings Section -->
+            <div class="mb-8 bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
+                <div class="flex items-center gap-4">
+                    <div class="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-2xl text-emerald-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold" data-i18n="salaryTitle">الراتب الشهري</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="salarySub">أدخل راتبك لمعرفة المتبقي بعد الأقساط</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <input type="number" id="salary-input" class="w-full md:w-48 px-4 py-3 rounded-2xl border dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold" placeholder="0.00" oninput="updateSalary(this.value)">
+                    <div class="bg-slate-100 dark:bg-slate-800 px-4 py-3 rounded-2xl flex items-center font-bold">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Saudi_Riyal_Symbol.svg" class="currency-symbol h-5" alt="﷼">
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <!-- New Remaining from Salary Stat -->
+                <div id="remaining-salary-card" class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-3xl shadow-lg text-white md:col-span-2 hidden animate-in zoom-in duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <p class="text-emerald-50 text-sm font-medium" data-i18n="remainingSalary">المتبقي من الراتب (الصافي)</p>
+                        <div class="bg-white/20 p-2 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                    </div>
+                    <p id="stat-net-salary" class="text-4xl font-bold flex items-center gap-2">0 <span class="text-xl opacity-80">﷼</span></p>
+                </div>
+
                 <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border-r-4 border-blue-500 transition-colors">
                     <p class="text-slate-500 dark:text-slate-400 text-sm mb-1" data-i18n="totalRemaining">المبلغ المتبقي الكلي</p>
                     <p id="stat-remaining" class="text-2xl font-bold flex items-center"></p>
@@ -254,8 +287,8 @@
             <form id="debt-form" class="p-6 space-y-4">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
-                        <label class="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest" data-i18n="field_name">وصف الدين</label>
-                        <input id="f-name" required type="text" data-i18n-placeholder="placeholder_name" class="w-full px-5 py-4 rounded-2xl border-2 dark:border-slate-700 bg-transparent dark:text-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="labelName">اسم الدين / الغرض</label>
+                        <input id="f-name" required type="text" class="w-full px-4 py-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="labelAmount">المبلغ الإجمالي</label>
@@ -263,10 +296,10 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="labelDuration">المدة (أشهر)</label>
-                        <input id="f-duration" required type="number" placeholder="0" class="w-full px-4 py-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <input id="f-duration" required type="number" placeholder="0"class="w-full px-4 py-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="labelDay">يوم السداد </label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="labelDay">يوم السداد الشهري</label>
                         <input id="f-repaymentDay" required type="number" min="1" max="31" placeholder="0" class="w-full px-4 py-3 rounded-xl border dark:border-slate-700 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                     <div>
@@ -325,7 +358,6 @@
                 labelDay: "يوم السداد الشهري",
                 labelCategory: "التصنيف",
                 labelDate: "تاريخ البدء",
-                placeholder_name: "مثال: قسط السيارة، سلفة أحمد",
                 btnSave: "حفظ الدين",
                 btnCancel: "إلغاء",
                 congrats: "مبارك لك!",
@@ -344,7 +376,10 @@
                 cats: { Personal: "سلفة شخصية", Savings: "جمعية شهرية", Installments: "أقساط مشتريات", Bank: "قرض بنكي", Other: "آخر" },
                 notifTitle: "تذكير بالسداد",
                 notifMsg: "لديك موعد سداد اليوم للالتزام: ",
-                notifEnabled: "تم تفعيل التنبيهات بنجاح"
+                notifEnabled: "تم تفعيل التنبيهات بنجاح",
+                salaryTitle: "الراتب الشهري",
+                salarySub: "أدخل راتبك لمعرفة المتبقي بعد الأقساط",
+                remainingSalary: "المتبقي من الراتب (الصافي)"
             },
             en: {
                 title: "My Obligations",
@@ -365,7 +400,6 @@
                 labelDay: "Repayment Day",
                 labelCategory: "Category",
                 labelDate: "Start Date",
-                placeholder_name: "Car Installment, Loan to Ahmed",
                 btnSave: "Save Debt",
                 btnCancel: "Cancel",
                 congrats: "Congratulations!",
@@ -384,12 +418,16 @@
                 cats: { Personal: "Personal Loan", Savings: "Monthly Savings", Installments: "Installments", Bank: "Bank Loan", Other: "Other" },
                 notifTitle: "Payment Reminder",
                 notifMsg: "You have a payment due today for: ",
-                notifEnabled: "Notifications enabled successfully"
+                notifEnabled: "Notifications enabled successfully",
+                salaryTitle: "Monthly Salary",
+                salarySub: "Enter your salary to see net amount after installments",
+                remainingSalary: "Remaining Salary (Net)"
             }
         };
 
         const RIYAL_ICON = `<img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Saudi_Riyal_Symbol.svg" class="currency-symbol" alt="﷼">`;
         let debts = JSON.parse(localStorage.getItem('obligations_data') || '[]');
+        let currentSalary = parseFloat(localStorage.getItem('user_salary') || '0');
         let currentLang = localStorage.getItem('lang') || 'ar';
         let currentTheme = localStorage.getItem('theme') || 'light';
         let activeTab = 'dashboard';
@@ -403,8 +441,8 @@
             document.body.className = `min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors ${currentLang === 'ar' ? 'font-arabic' : 'font-english'}`;
             
             document.getElementById('theme-checkbox').checked = (currentTheme === 'light');
+            document.getElementById('salary-input').value = currentSalary > 0 ? currentSalary : '';
             
-            // تحميل حالة التنبيهات من الذاكرة
             const notifPref = localStorage.getItem('notif_enabled') === 'true';
             const checkbox = document.getElementById('notif-checkbox');
             
@@ -412,9 +450,6 @@
                 checkbox.checked = true;
                 document.getElementById('notif-dot').classList.remove('hidden');
                 checkDuePayments();
-            } else {
-                checkbox.checked = false;
-                document.getElementById('notif-dot').classList.add('hidden');
             }
 
             updateTranslations();
@@ -437,15 +472,16 @@
             setTimeout(() => { screen.style.display = 'none'; }, 800);
         }
 
+        function updateSalary(val) {
+            currentSalary = parseFloat(val) || 0;
+            localStorage.setItem('user_salary', currentSalary);
+            renderDashboard();
+        }
+
         function requestNotificationPermission() {
             const checkbox = document.getElementById('notif-checkbox');
             const t = i18n[currentLang];
-            
-            if (!("Notification" in window)) {
-                checkbox.checked = false;
-                return;
-            }
-
+            if (!("Notification" in window)) { checkbox.checked = false; return; }
             if (checkbox.checked) {
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
@@ -453,10 +489,7 @@
                         document.getElementById('notif-dot').classList.remove('hidden');
                         new Notification(t.notifTitle, { body: t.notifEnabled });
                         checkDuePayments();
-                    } else {
-                        checkbox.checked = false;
-                        localStorage.setItem('notif_enabled', 'false');
-                    }
+                    } else { checkbox.checked = false; }
                 });
             } else {
                 localStorage.setItem('notif_enabled', 'false');
@@ -467,19 +500,16 @@
         function checkDuePayments() {
             const notifPref = localStorage.getItem('notif_enabled') === 'true';
             if (Notification.permission !== 'granted' || !notifPref) return;
-
             const today = new Date();
             const currentDay = today.getDate();
             const dateKey = `${today.getFullYear()}-${today.getMonth()}-${currentDay}`;
             const lastNotified = localStorage.getItem('last_notified_date');
-            
             if (lastNotified === dateKey) return;
-
             const t = i18n[currentLang];
             let notifiedCount = 0;
             debts.forEach(debt => {
                 if (debt.status === 'active' && parseInt(debt.repaymentDay) === currentDay) {
-                    new Notification(t.notifTitle, { body: `${t.notifMsg} ${debt.name}`, icon: 'icon.jpg' });
+                    new Notification(t.notifTitle, { body: `${t.notifMsg} ${debt.name}`, icon: 'icon.png' });
                     notifiedCount++;
                 }
             });
@@ -653,10 +683,23 @@
                     totalMonthly += parseFloat(d.monthlyInstallment);
                 }
             });
+
+            // Update Basic Stats
             document.getElementById('stat-remaining').innerHTML = totalRemaining.toLocaleString() + RIYAL_ICON;
             document.getElementById('stat-paid').innerHTML = totalPaid.toLocaleString() + RIYAL_ICON;
             document.getElementById('stat-monthly').innerHTML = totalMonthly.toLocaleString() + RIYAL_ICON;
             document.getElementById('stat-count').textContent = active.length;
+
+            // Handle Salary Logic
+            const netSalaryCard = document.getElementById('remaining-salary-card');
+            if (currentSalary > 0) {
+                netSalaryCard.classList.remove('hidden');
+                const netAmount = currentSalary - totalMonthly;
+                document.getElementById('stat-net-salary').innerHTML = netAmount.toLocaleString() + ' <span class="text-xl opacity-80">﷼</span>';
+            } else {
+                netSalaryCard.classList.add('hidden');
+            }
+
             renderCharts(active);
         }
 
